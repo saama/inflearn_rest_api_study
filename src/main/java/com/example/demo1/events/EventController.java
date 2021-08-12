@@ -4,10 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -25,7 +27,10 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody EventDto eventDto){
+    public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors){
+        if(errors.hasErrors()){
+            return ResponseEntity.badRequest().build();
+        }
         //eventDto는 id값등이 없기때문에 test에서 입력했어도 값이 들어오지않음
         //modelMapper는 eventDto.setId(...)처럼 하나하나 넣어서 event로 만드는작업을 줄이고 한번에 변환해줌
         Event event = modelMapper.map(eventDto, Event.class);
