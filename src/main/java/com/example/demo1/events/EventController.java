@@ -20,10 +20,12 @@ public class EventController {
 
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
+    private final EventValidator eventValidator;
 
-    public EventController( EventRepository eventRepository, ModelMapper modelMapper){
+    public EventController( EventRepository eventRepository, ModelMapper modelMapper, EventValidator eventValidator){
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
+        this.eventValidator = eventValidator;
     }
 
     @PostMapping
@@ -31,6 +33,12 @@ public class EventController {
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().build();
         }
+
+        eventValidator.validate(eventDto, errors);
+        if(errors.hasErrors()){
+            return ResponseEntity.badRequest().build();
+        }
+
         //eventDto는 id값등이 없기때문에 test에서 입력했어도 값이 들어오지않음
         //modelMapper는 eventDto.setId(...)처럼 하나하나 넣어서 event로 만드는작업을 줄이고 한번에 변환해줌
         Event event = modelMapper.map(eventDto, Event.class);
