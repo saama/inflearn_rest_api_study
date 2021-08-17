@@ -1,0 +1,4 @@
+POST localhost:8080/api/events
+Content-Type: application/json;charset=UTF-8
+
+{"name":"Spring","description":"REST API Development with Spring","beginEnrollmentDateTime":"2021-08-09T20:23:00","closeEnrollmentDateTime":"2021-08-09T20:30:00","beginEventDateTime":"2020-08-09T20:23:00","endEventDateTime":"2020-08-09T20:30:00","location":"하대원동 131","basePrice":100,"maxPrice":200,"limitOfEnrollment":100}
